@@ -4,7 +4,7 @@ import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 
 const ListYourCar = () => {
-  const { setShowLogin, user, navigate } = useAppContext()
+  const { showLoginWithRedirect, user, navigate } = useAppContext()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -286,7 +286,7 @@ const ListYourCar = () => {
                 viewport={{ once: true }}
                 className="text-center text-gray-600 mt-4"
               >
-                Already have an account? <button onClick={() => setShowLogin(true)} className="text-primary hover:underline">Sign in here</button>
+                Already have an account? <button onClick={() => showLoginWithRedirect()} className="text-primary hover:underline">Sign in here</button>
               </motion.p>
             )}
           </div>

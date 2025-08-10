@@ -1,5 +1,5 @@
 // Complete state-city mapping for India
-export const stateCityMapping = {
+const rawStateCityMapping = {
   'Andhra Pradesh': [
     'Vijayawada', 'Visakhapatnam', 'Guntur', 'Nellore', 'Kurnool', 'Rajahmundry',
     'Tirupati', 'Kakinada', 'Eluru', 'Anantapur', 'Chittoor', 'Machilipatnam',
@@ -228,6 +228,12 @@ export const stateCityMapping = {
     'Kavaratti'
   ]
 };
+
+// Sort all cities alphabetically
+export const stateCityMapping = Object.keys(rawStateCityMapping).reduce((acc, state) => {
+  acc[state] = rawStateCityMapping[state].sort();
+  return acc;
+}, {});
 
 // Indian states list
 export const statesList = [

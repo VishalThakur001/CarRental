@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
@@ -10,12 +10,14 @@ export const AppContext = createContext();
 export const AppProvider = ({ children })=>{
 
     const navigate = useNavigate()
+    const location = useLocation()
     const currency = import.meta.env.VITE_CURRENCY
 
     const [token, setToken] = useState(null)
     const [user, setUser] = useState(null)
     const [isOwner, setIsOwner] = useState(false)
     const [showLogin, setShowLogin] = useState(false)
+    const [previousLocation, setPreviousLocation] = useState('/')
     const [pickupDate, setPickupDate] = useState('')
     const [returnDate, setReturnDate] = useState('')
 
@@ -96,10 +98,23 @@ export const AppProvider = ({ children })=>{
         }
     },[token])
 
+    // Function to show login and store current location
+    const showLoginWithRedirect = () => {
+        setPreviousLocation(location.pathname + location.search)
+        setShowLogin(true)
+    }
+
+    // Function to navigate after login
+    const navigateAfterLogin = () => {
+        const redirectTo = previousLocation === '/login' ? '/' : previousLocation
+        navigate(redirectTo)
+        setPreviousLocation('/') // Reset after use
+    }
+
     const value = {
         navigate, currency, axios, user, setUser,
-        token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, logout, fetchCars, cars, setCars, 
-        pickupDate, setPickupDate, returnDate, setReturnDate
+        token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, showLoginWithRedirect, navigateAfterLogin, logout, fetchCars, cars, setCars,
+        pickupDate, setPickupDate, returnDate, setReturnDate, previousLocation, setPreviousLocation
     }
 
     return (

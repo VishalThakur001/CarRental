@@ -87,3 +87,54 @@ export const getCars = async (req, res) =>{
         res.json({success: false, message: error.message})
     }
 }
+
+// Update Profile Image with predefined avatar
+export const updateProfileImage = async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const { imageType, imageUrl } = req.body;
+
+        // If removing image, set to empty string
+        if (imageType === 'default') {
+            await User.findByIdAndUpdate(_id, { image: '' });
+            return res.json({ success: true, message: 'Profile photo removed successfully' });
+        }
+
+        // If setting predefined avatar
+        if (imageType === 'avatar' && imageUrl) {
+            await User.findByIdAndUpdate(_id, { image: imageUrl });
+            return res.json({ success: true, message: 'Profile photo updated successfully' });
+        }
+
+        res.json({ success: false, message: 'Invalid request parameters' });
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// Upload Profile Image (custom upload)
+export const uploadProfileImage = async (req, res) => {
+    try {
+        const { _id } = req.user;
+
+        if (!req.file) {
+            return res.json({ success: false, message: 'No image file provided' });
+        }
+
+        // Here you would integrate with your image upload service (ImageKit, Cloudinary, etc.)
+        // For now, we'll use a placeholder URL
+        const imageUrl = `https://placeholder-for-uploaded-image.com/${req.file.filename}`;
+
+        await User.findByIdAndUpdate(_id, { image: imageUrl });
+
+        res.json({
+            success: true,
+            message: 'Profile photo uploaded successfully',
+            imageUrl
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}

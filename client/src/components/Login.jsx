@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 const Login = () => {
 
-    const {setShowLogin, axios, setToken, navigate} = useAppContext()
+    const {setShowLogin, axios, setToken, navigateAfterLogin} = useAppContext()
 
     const [state, setState] = React.useState("login");
     const [name, setName] = React.useState("");
@@ -131,7 +131,7 @@ const Login = () => {
                 setShowLogin(false);
                 resetForm();
                 toast.success(data.message || 'Registration successful!');
-                navigate('/');
+                navigateAfterLogin();
             } else {
                 toast.error(data.message);
             }
@@ -154,7 +154,7 @@ const Login = () => {
                 setShowLogin(false);
                 resetForm();
                 toast.success(data.message || 'Login successful!');
-                navigate('/');
+                navigateAfterLogin();
             } else {
                 toast.error(data.message);
             }

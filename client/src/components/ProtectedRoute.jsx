@@ -3,13 +3,13 @@ import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 
 const ProtectedRoute = ({ children, requireOwner = false }) => {
-  const { user, isOwner, setShowLogin, token } = useAppContext()
+  const { user, isOwner, showLoginWithRedirect, token } = useAppContext()
 
   useEffect(() => {
     // If no token, show login immediately
     if (!token) {
       toast.error('Please login to access this page')
-      setShowLogin(true)
+      showLoginWithRedirect()
       return
     }
 
@@ -21,17 +21,17 @@ const ProtectedRoute = ({ children, requireOwner = false }) => {
     // If user is required but not logged in
     if (!user) {
       toast.error('Please login to access this page')
-      setShowLogin(true)
+      showLoginWithRedirect()
       return
     }
 
     // If owner access is required but user is not an owner
     if (requireOwner && !isOwner) {
       toast.error('Owner access required for this page')
-      setShowLogin(true)
+      showLoginWithRedirect()
       return
     }
-  }, [user, isOwner, setShowLogin, token, requireOwner])
+  }, [user, isOwner, showLoginWithRedirect, token, requireOwner])
 
   // Show loading while token exists but user data is being fetched
   if (token && !user) {
