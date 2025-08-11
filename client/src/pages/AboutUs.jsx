@@ -60,9 +60,9 @@ const AboutUs = () => {
                 viewport={{ once: true }}
                 className="text-gray-600 leading-relaxed mb-4"
               >
-                Founded in 2020, CarRental has become India's leading car rental platform, 
-                connecting car owners with travelers who need reliable, affordable transportation. 
-                We started with a simple mission: make car rental accessible, transparent, and trustworthy.
+                We are Vishal Thakur and Rohit Sharma, passionate developers dedicated to building efficient and user-friendly digital solutions. Our Car Rental Project is designed to make vehicle booking simple, fast, and accessible for everyone.
+                With a focus on seamless user experience, secure transactions, and real-time availability, our platform allows customers to browse, book, and manage rentals with ease. From intuitive navigation to robust backend functionality, every feature has been crafted to ensure convenience for both customers and rental service providers.
+                Our goal is to combine technology and practicality, delivering a solution that saves time, reduces hassle, and enhances mobility.
               </motion.p>
               <motion.p 
                 initial={{ opacity: 0, x: -30 }}
