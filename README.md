@@ -4,7 +4,7 @@ A comprehensive, full-stack car rental application built with modern web technol
 
 ## 🌐 Live Demo
 
-*🚀 Live Website*: [Car Rental Platform]((https://car-rental-bay-rho.vercel.app/))
+*🚀 Live Website*: [Car Rental Platform](https://car-rental-bay-rho.vercel.app/)
 
 > *Note*: The live demo is fully functional with all features including user registration, car listings, booking system, and owner dashboard.
 
