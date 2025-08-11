@@ -64,16 +64,6 @@ const AboutUs = () => {
                 With a focus on seamless user experience, secure transactions, and real-time availability, our platform allows customers to browse, book, and manage rentals with ease. From intuitive navigation to robust backend functionality, every feature has been crafted to ensure convenience for both customers and rental service providers.
                 Our goal is to combine technology and practicality, delivering a solution that saves time, reduces hassle, and enhances mobility.
               </motion.p>
-              <motion.p 
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                viewport={{ once: true }}
-                className="text-gray-600 leading-relaxed"
-              >
-                Today, we serve customers across major Indian cities, offering everything from 
-                economy cars to luxury vehicles, all maintained to the highest standards.
-              </motion.p>
             </div>
             <motion.div
               initial={{ opacity: 0, x: 30 }}
