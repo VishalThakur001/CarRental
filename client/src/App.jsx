@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import CarDetails from './pages/CarDetails'
 import Cars from './pages/Cars'
 import MyBookings from './pages/MyBookings'
+import Profile from './pages/Profile'
 import AboutUs from './pages/AboutUs'
 import ListYourCar from './pages/ListYourCar'
 import HelpCenter from './pages/HelpCenter'
@@ -25,8 +26,20 @@ import { useAppContext } from './context/AppContext'
 
 const App = () => {
 
-  const {showLogin} = useAppContext()
+  const {showLogin, authLoading} = useAppContext()
   const isOwnerPath = useLocation().pathname.startsWith('/owner')
+
+  // Show loading screen during initial authentication check
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -35,40 +48,47 @@ const App = () => {
 
       {!isOwnerPath && <Navbar/>}
 
-    <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/car-details/:id' element={<CarDetails/>}/>
-      <Route path='/cars' element={<Cars/>}/>
-      <Route path='/my-bookings' element={
-        <ProtectedRoute>
-          <MyBookings/>
-        </ProtectedRoute>
-      }/>
-      <Route path='/about-us' element={<AboutUs/>}/>
-      <Route path='/list-your-car' element={
-        <ProtectedRoute>
-          <ListYourCar/>
-        </ProtectedRoute>
-      }/>
-      <Route path='/help-center' element={<HelpCenter/>}/>
-      <Route path='/terms-of-service' element={<TermsOfService/>}/>
-      <Route path='/privacy-policy' element={<Navigate to="/data-protection" replace />}/>
-      <Route path='/data-protection' element={<DataProtection/>}/>
-      <Route path='/insurance' element={<Insurance/>}/>
-      <Route path='/owner' element={
-        <ProtectedRoute requireOwner={true}>
-          <Layout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<Dashboard />}/>
-        <Route path="add-car" element={<AddCar />}/>
-        <Route path="manage-cars" element={<ManageCars />}/>
-        <Route path="manage-bookings" element={<ManageBookings />}/>
-        <Route path="manage-reviews" element={<ManageReviews />}/>
-      </Route>
-    </Routes>
+    <div className={!isOwnerPath ? "pt-20" : ""}>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/car-details/:id' element={<CarDetails/>}/>
+        <Route path='/cars' element={<Cars/>}/>
+        <Route path='/my-bookings' element={
+          <ProtectedRoute>
+            <MyBookings/>
+          </ProtectedRoute>
+        }/>
+        <Route path='/profile' element={
+          <ProtectedRoute>
+            <Profile/>
+          </ProtectedRoute>
+        }/>
+        <Route path='/about-us' element={<AboutUs/>}/>
+        <Route path='/list-your-car' element={
+          <ProtectedRoute>
+            <ListYourCar/>
+          </ProtectedRoute>
+        }/>
+        <Route path='/help-center' element={<HelpCenter/>}/>
+        <Route path='/terms-of-service' element={<TermsOfService/>}/>
+        <Route path='/privacy-policy' element={<Navigate to="/data-protection" replace />}/>
+        <Route path='/data-protection' element={<DataProtection/>}/>
+        <Route path='/insurance' element={<Insurance/>}/>
+        <Route path='/owner' element={
+          <ProtectedRoute requireOwner={true}>
+            <Layout />
+          </ProtectedRoute>
+        }>
+          <Route index element={<Dashboard />}/>
+          <Route path="add-car" element={<AddCar />}/>
+          <Route path="manage-cars" element={<ManageCars />}/>
+          <Route path="manage-bookings" element={<ManageBookings />}/>
+          <Route path="manage-reviews" element={<ManageReviews />}/>
+        </Route>
+      </Routes>
 
-    {!isOwnerPath && <Footer />}
+      {!isOwnerPath && <Footer />}
+    </div>
     
     </>
   )

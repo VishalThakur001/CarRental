@@ -4,6 +4,7 @@ import { assets } from '../../assets/assets'
 import { useAppContext } from '../../context/AppContext'
 import { stateCityMapping, statesList } from '../../data/stateCityMapping'
 import toast from 'react-hot-toast'
+import { validateImageFile } from '../../utils/errorHandling'
 
 const AddCar = () => {
 
@@ -77,14 +78,7 @@ const AddCar = () => {
     }
 
     // Validate image file
-    if (image.size > 5 * 1024 * 1024) { // 5MB limit
-      toast.error('Image size must be less than 5MB')
-      return
-    }
-
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-    if (!allowedTypes.includes(image.type)) {
-      toast.error('Please upload a valid image file (JPEG, PNG, or WebP)')
+    if (!validateImageFile(image)) {
       return
     }
 
@@ -152,7 +146,7 @@ const AddCar = () => {
         <div className='flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full'>
           <label htmlFor="car-image" className='cursor-pointer'>
             <img src={image ? URL.createObjectURL(image) : assets.upload_icon} alt="" className='h-16 sm:h-20 w-16 sm:w-20 rounded-lg object-cover border-2 border-dashed border-gray-300 hover:border-primary transition-colors'/>
-            <input type="file" id="car-image" accept="image/*" hidden onChange={e=> setImage(e.target.files[0])}/>
+            <input type="file" id="car-image" accept="image/jpeg,image/jpg,image/png,image/webp" hidden onChange={e=> setImage(e.target.files[0])}/>
           </label>
           <div>
             <p className='text-sm sm:text-base text-gray-700 font-medium'>Upload Car Image *</p>
@@ -194,16 +188,10 @@ const AddCar = () => {
               <option value="SUV">SUV</option>
               <option value="Hatchback">Hatchback</option>
               <option value="Coupe">Coupe</option>
-              <option value="Convertible">Convertible</option>
               <option value="Wagon">Wagon</option>
               <option value="Pickup Truck">Pickup Truck</option>
               <option value="Van">Van</option>
-              <option value="Minivan">Minivan</option>
-              <option value="Crossover">Crossover</option>
               <option value="Luxury">Luxury</option>
-              <option value="Sports Car">Sports Car</option>
-              <option value="Electric">Electric</option>
-              <option value="Hybrid">Hybrid</option>
             </select>
           </div>
         </div>

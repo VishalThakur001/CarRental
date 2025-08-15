@@ -17,194 +17,244 @@ const Hero = () => {
     }
 
   return (
-    <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.8 }}
-    className='min-h-screen flex flex-col items-center justify-center gap-8 sm:gap-12 lg:gap-14 bg-gradient-to-br from-light via-white to-blue-50 text-center px-4 relative overflow-hidden'>
-
-      {/* Background Elements */}
+    <div className='min-h-screen bg-gradient-to-br from-light via-white to-purple-50 relative overflow-hidden'>
+      
+      {/* Background Decorative Elements */}
       <div className='absolute inset-0 overflow-hidden pointer-events-none'>
-        <div className='absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl'></div>
-        <div className='absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl'></div>
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/3 to-blue-500/3 rounded-full blur-3xl'></div>
+        <div className='absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-600/10 rounded-full blur-3xl'></div>
+        <div className='absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-tr from-purple-500/8 to-primary/8 rounded-full blur-3xl'></div>
+        <div className='absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-primary/5 to-purple-600/5 rounded-full blur-3xl'></div>
       </div>
 
+      <div className='relative z-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 pt-20 pb-8'>
+        
+        {/* Hero Content */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[85vh]'>
+          
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className='space-y-8'
+          >
+            {/* Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className='inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary/10 to-purple-600/10 border border-primary/20 rounded-full text-primary font-medium text-sm'
+            >
+              <div className='w-2 h-2 bg-primary rounded-full mr-2 animate-pulse'></div>
+              Premium Car Rental Platform
+            </motion.div>
+
+            {/* Main Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className='space-y-4'
+            >
+              <h1 className='text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight'>
+                Experience the 
+                <span className='text-transparent bg-gradient-to-r from-primary to-purple-600 bg-clip-text block'>
+                  Future of Driving
+                </span>
+              </h1>
+              <p className='text-lg sm:text-xl text-gray-600 max-w-lg leading-relaxed'>
+                Discover premium vehicles, experience luxury, and create unforgettable journeys with our curated collection of cars.
+              </p>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className='grid grid-cols-3 gap-6 pt-4'
+            >
+              <div className='text-center'>
+                <div className='text-2xl font-bold text-gray-900'>500+</div>
+                <div className='text-sm text-gray-600'>Premium Cars</div>
+              </div>
+              <div className='text-center'>
+                <div className='text-2xl font-bold text-gray-900'>50+</div>
+                <div className='text-sm text-gray-600'>Cities</div>
+              </div>
+              <div className='text-center'>
+                <div className='text-2xl font-bold text-gray-900'>10k+</div>
+                <div className='text-sm text-gray-600'>Happy Customers</div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Content - Car Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 100, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className='relative flex justify-center lg:justify-end'
+          >
+            <div className='relative'>
+              <div className='absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-full blur-3xl transform rotate-6'></div>
+              <img
+                src={assets.main_car}
+                alt="Premium Car"
+                className='relative z-10 max-h-72 sm:max-h-80 lg:max-h-96 xl:max-h-[450px] w-auto object-contain filter drop-shadow-2xl'
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Search Card */}
         <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className='relative z-10'>
-          <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold max-w-4xl leading-tight bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4'>
-            Luxury Cars on Rent
-          </h1>
-          <p className='text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto font-medium'>
-            Discover premium vehicles for your perfect journey
-          </p>
-        </motion.div>
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className='mt-12 lg:mt-20'
+        >
+          <div className='max-w-6xl mx-auto'>
+            <div className='bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 lg:p-10'>
+              
+              {/* Card Header */}
+              <div className='text-center mb-8'>
+                <h2 className='text-2xl lg:text-3xl font-bold text-gray-900 mb-2'>
+                  Find Your Perfect Ride
+                </h2>
+                <p className='text-gray-600'>
+                  Choose your destination and dates to start your journey
+                </p>
+              </div>
 
-      <motion.div
-        initial={{ x: 200, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
-        className='relative z-10 mb-8'>
-        <img
-          src={assets.main_car}
-          alt="car"
-          className='max-h-48 sm:max-h-60 md:max-h-72 lg:max-h-80 xl:max-h-96 w-auto object-contain filter drop-shadow-2xl'
-        />
-      </motion.div>
-
-      <motion.div
-      initial={{ scale: 0.95, opacity: 0, y: 50 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.6 }}
-      className='w-full max-w-6xl xl:max-w-7xl relative z-20 mb-8'>
-
-        {/* Modern Search Card */}
-        <div className='bg-white backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-200/50 p-6 sm:p-8 lg:p-10 hover:shadow-3xl transition-all duration-500 ring-1 ring-gray-200/20'>
-          <div className='mb-6'>
-            <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>Find Your Perfect Ride</h2>
-            <p className='text-gray-600 text-sm sm:text-base'>Choose your destination and dates to get started</p>
-          </div>
-
-          <form onSubmit={handleSearch} className='space-y-6'>
-
-            {/* Location Section */}
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-              <div className='space-y-4'>
-                <div className='flex items-center gap-2 mb-3'>
-                  <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center'>
-                    <img src={assets.location_icon} alt="location" className='w-4 h-4 opacity-60'/>
-                  </div>
-                  <h3 className='font-semibold text-gray-800'>Location</h3>
-                </div>
-
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  <div className='relative'>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>State</label>
+              <form onSubmit={handleSearch} className='space-y-8'>
+                
+                {/* Search Fields */}
+                <div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
+                  
+                  {/* State Selection */}
+                  <div className='space-y-2'>
+                    <label className='text-sm font-semibold text-gray-700 flex items-center gap-2'>
+                      <div className='w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center'>
+                        <img src={assets.location_icon} alt="location" className='w-3 h-3'/>
+                      </div>
+                      State
+                    </label>
                     <div className='relative'>
                       <select
                         required
                         value={selectedState}
                         onChange={(e)=> {
                           setSelectedState(e.target.value)
-                          setPickupLocation('') // Reset city when state changes
+                          setPickupLocation('')
                         }}
-                        className='w-full px-4 py-4 pr-10 border border-gray-300 rounded-xl outline-none bg-white text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-md transition-all duration-300 appearance-none cursor-pointer'
+                        className='w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-2xl outline-none text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 appearance-none cursor-pointer'
                       >
                         <option value="">Choose State</option>
                         {statesList.map((state, index)=> <option key={`${state}-${index}`} value={state}>{state}</option>)}
                       </select>
-                      <div className='absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none'>
-                        <svg className='w-5 h-5 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <div className='absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+                        <svg className='w-4 h-4 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                         </svg>
                       </div>
                     </div>
-                    {selectedState && <div className='absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full'></div>}
                   </div>
-                  <div className='relative'>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>City</label>
+
+                  {/* City Selection */}
+                  <div className='space-y-2'>
+                    <label className='text-sm font-semibold text-gray-700 flex items-center gap-2'>
+                      <div className='w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center'>
+                        <img src={assets.location_icon} alt="location" className='w-3 h-3'/>
+                      </div>
+                      City
+                    </label>
                     <div className='relative'>
                       <select
                         required
                         value={pickupLocation}
                         onChange={(e)=>setPickupLocation(e.target.value)}
                         disabled={!selectedState}
-                        className='w-full px-4 py-4 pr-10 border border-gray-300 rounded-xl outline-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-md transition-all duration-300 appearance-none cursor-pointer'
+                        className='w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-2xl outline-none disabled:bg-gray-50 disabled:cursor-not-allowed text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 appearance-none cursor-pointer'
                       >
                         <option value="">{selectedState ? 'Choose City' : 'Select state first'}</option>
                         {selectedState && stateCityMapping[selectedState] &&
                           stateCityMapping[selectedState].map((city, index)=> <option key={`${city}-${index}`} value={city}>{city}</option>)
                         }
                       </select>
-                      <div className='absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none'>
-                        <svg className='w-5 h-5 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <div className='absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+                        <svg className='w-4 h-4 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
                         </svg>
                       </div>
                     </div>
-                    {!selectedState && (
-                      <p className='text-xs text-amber-600 mt-1 flex items-center gap-1'>
-                        <svg className='w-3 h-3' fill='currentColor' viewBox='0 0 20 20'>
-                          <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z' clipRule='evenodd' />
-                        </svg>
-                        Please select a state first
-                      </p>
-                    )}
-                    {pickupLocation && <div className='absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full'></div>}
                   </div>
-                </div>
-              </div>
-              <div className='space-y-4'>
-                <div className='flex items-center gap-2 mb-3'>
-                  <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center'>
-                    <img src={assets.calendar_icon_colored} alt="calendar" className='w-4 h-4'/>
-                  </div>
-                  <h3 className='font-semibold text-gray-800'>Rental Period</h3>
-                </div>
 
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  <div className='relative'>
-                    <label htmlFor='pickup-date' className='block text-sm font-medium text-gray-700 mb-2'>Pick-up Date</label>
-                    <div className='relative'>
-                      <input
-                          value={pickupDate}
-                          onChange={e=>setPickupDate(e.target.value)}
-                          type="date"
-                          id="pickup-date"
-                          min={(() => {
-                            const today = new Date();
-                            const year = today.getFullYear();
-                            const month = String(today.getMonth() + 1).padStart(2, '0');
-                            const day = String(today.getDate()).padStart(2, '0');
-                            return `${year}-${month}-${day}`;
-                          })()}
-                          className='w-full px-4 py-4 pr-4 border border-gray-300 rounded-xl outline-none text-sm text-gray-700 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-md transition-all duration-300'
-                          required
-                      />
-                    </div>
-                    {pickupDate && <div className='absolute top-6 -right-1 w-3 h-3 bg-green-500 rounded-full'></div>}
+                  {/* Pickup Date */}
+                  <div className='space-y-2'>
+                    <label className='text-sm font-semibold text-gray-700 flex items-center gap-2'>
+                      <div className='w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center'>
+                        <img src={assets.calendar_icon_colored} alt="calendar" className='w-3 h-3'/>
+                      </div>
+                      Pick-up Date
+                    </label>
+                    <input
+                      value={pickupDate}
+                      onChange={e=>setPickupDate(e.target.value)}
+                      type="date"
+                      min={(() => {
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0');
+                        const day = String(today.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                      })()}
+                      className='w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-2xl outline-none text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300'
+                      required
+                    />
                   </div>
-                  <div className='relative'>
-                    <label htmlFor='return-date' className='block text-sm font-medium text-gray-700 mb-2'>Return Date</label>
-                    <div className='relative'>
-                      <input
-                          value={returnDate}
-                          onChange={e=>setReturnDate(e.target.value)}
-                          type="date"
-                          id="return-date"
-                          className='w-full px-4 py-4 pr-4 border border-gray-300 rounded-xl outline-none text-sm text-gray-700 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-md transition-all duration-300'
-                          required
-                      />
-                    </div>
-                    {returnDate && <div className='absolute top-6 -right-1 w-3 h-3 bg-green-500 rounded-full'></div>}
+
+                  {/* Return Date */}
+                  <div className='space-y-2'>
+                    <label className='text-sm font-semibold text-gray-700 flex items-center gap-2'>
+                      <div className='w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center'>
+                        <img src={assets.calendar_icon_colored} alt="calendar" className='w-3 h-3'/>
+                      </div>
+                      Return Date
+                    </label>
+                    <input
+                      value={returnDate}
+                      onChange={e=>setReturnDate(e.target.value)}
+                      type="date"
+                      className='w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-2xl outline-none text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300'
+                      required
+                    />
                   </div>
                 </div>
-              </div>
-            </div>
-            
-            {/* Search Button */}
-            <div className='pt-6 border-t border-gray-100'>
-              <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className='w-full bg-gradient-to-r from-primary to-primary-dull hover:from-primary-dull hover:to-primary text-white py-4 px-8 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group'>
-                <div className='w-6 h-6 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors'>
-                  <img src={assets.search_icon} alt="search" className='brightness-300 w-4 h-4'/>
+                
+                {/* Search Button */}
+                <div className='flex justify-center pt-4'>
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className='px-12 py-4 bg-gradient-to-r from-primary to-purple-600 hover:from-purple-600 hover:to-primary text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-3'
+                  >
+                    <div className='w-6 h-6 bg-white/20 rounded-full flex items-center justify-center'>
+                      <img src={assets.search_icon} alt="search" className='brightness-300 w-4 h-4'/>
+                    </div>
+                    <span>Search Available Cars</span>
+                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                    </svg>
+                  </motion.button>
                 </div>
-                <span>Search Available Cars</span>
-                <svg className='w-5 h-5 group-hover:translate-x-1 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                </svg>
-              </motion.button>
+              </form>
             </div>
-          </form>
-        </div>
-      </motion.div>
-    </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   )
 }
 

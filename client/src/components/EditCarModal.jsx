@@ -4,6 +4,7 @@ import { assets } from '../assets/assets';
 import { useAppContext } from '../context/AppContext';
 import { stateCityMapping, statesList } from '../data/stateCityMapping';
 import toast from 'react-hot-toast';
+import { validateImageFile } from '../utils/errorHandling';
 
 const EditCarModal = ({ isOpen, onClose, carData, onCarUpdated }) => {
   const { axios, currency } = useAppContext();
@@ -98,17 +99,8 @@ const EditCarModal = ({ isOpen, onClose, carData, onCarUpdated }) => {
     }
 
     // Validate image file if uploading new one
-    if (image) {
-      if (image.size > 5 * 1024 * 1024) {
-        toast.error('Image size must be less than 5MB');
-        return;
-      }
-
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-      if (!allowedTypes.includes(image.type)) {
-        toast.error('Please upload a valid image file (JPEG, PNG, or WebP)');
-        return;
-      }
+    if (image && !validateImageFile(image)) {
+      return;
     }
 
     setIsLoading(true);
@@ -206,11 +198,11 @@ const EditCarModal = ({ isOpen, onClose, carData, onCarUpdated }) => {
                         alt="" 
                         className="h-16 w-16 rounded-lg object-cover border-2 border-dashed border-gray-300 hover:border-primary transition-colors"
                       />
-                      <input 
-                        type="file" 
-                        id="car-image" 
-                        accept="image/*" 
-                        hidden 
+                      <input
+                        type="file"
+                        id="car-image"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        hidden
                         onChange={e => setImage(e.target.files[0])}
                       />
                     </label>

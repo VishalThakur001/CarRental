@@ -20,17 +20,22 @@ export const AppProvider = ({ children })=>{
     const [previousLocation, setPreviousLocation] = useState('/')
     const [pickupDate, setPickupDate] = useState('')
     const [returnDate, setReturnDate] = useState('')
+    const [authLoading, setAuthLoading] = useState(true) // Track initial auth state
 
     const [cars, setCars] = useState([])
 
     // Function to check if user is logged in
     const fetchUser = async ()=>{
+        console.log('🔍 Fetching user data...')
         try {
            const {data} = await axios.get('/api/user/data')
+           console.log('📡 User data response:', data)
            if (data.success) {
+            console.log('✅ User authenticated:', data.user.name)
             setUser(data.user)
             setIsOwner(data.user.role === 'owner')
            }else{
+            console.log('❌ User data fetch failed:', data.message)
             // If user data fetch fails, clear invalid token
             localStorage.removeItem('token')
             setToken(null)
@@ -39,6 +44,7 @@ export const AppProvider = ({ children })=>{
             delete axios.defaults.headers.common['Authorization']
            }
         } catch (error) {
+            console.log('🚨 Auth error:', error.response?.data || error.message)
             // If request fails (e.g., invalid token), clear auth state
             localStorage.removeItem('token')
             setToken(null)
@@ -46,9 +52,11 @@ export const AppProvider = ({ children })=>{
             setIsOwner(false)
             delete axios.defaults.headers.common['Authorization']
             // Only show auth error if user was previously authenticated
-            if (localStorage.getItem('token')) {
+            if (token) {
                 toast.error('Session expired. Please login again.')
             }
+        } finally {
+            setAuthLoading(false) // Always set loading to false
         }
     }
     // Function to fetch all cars from the server
@@ -78,23 +86,57 @@ export const AppProvider = ({ children })=>{
     }
 
 
-    // useEffect to retrieve the token from localStorage
+    // useEffect to retrieve the token from localStorage and initialize app
     useEffect(()=>{
-        const token = localStorage.getItem('token')
-        if (token) {
-            setToken(token)
+        console.log('🚀 Initializing app...')
+        const storedToken = localStorage.getItem('token')
+        console.log('🎫 Token from storage:', storedToken ? 'Found' : 'Not found')
+
+        if (storedToken) {
+            // Validate token format - it should be a valid JWT
+            try {
+                // Basic JWT format validation (has 3 parts separated by dots)
+                const parts = storedToken.split('.')
+                if (parts.length === 3) {
+                    console.log('✅ Token format valid, setting up auth...')
+                    setToken(storedToken)
+                    // Set authorization header immediately with Bearer prefix
+                    const authHeader = storedToken.startsWith('Bearer ') ? storedToken : `Bearer ${storedToken}`
+                    axios.defaults.headers.common['Authorization'] = authHeader
+                    console.log('🔐 Authorization header set')
+                } else {
+                    console.log('❌ Invalid token format, clearing...')
+                    // Invalid token format, clear it
+                    localStorage.removeItem('token')
+                    setAuthLoading(false)
+                }
+            } catch (error) {
+                console.log('❌ Token validation error:', error)
+                // Invalid token, clear it
+                localStorage.removeItem('token')
+                setAuthLoading(false)
+            }
+        } else {
+            console.log('ℹ️ No token found, user not authenticated')
+            setAuthLoading(false) // No token, stop loading
         }
         fetchCars()
     },[])
 
     // useEffect to fetch user data when token is available
     useEffect(()=>{
+        console.log('🎫 Token state changed:', token ? 'Set' : 'Cleared')
         if(token){
-            axios.defaults.headers.common['Authorization'] = `${token}`
+            // Ensure token format includes Bearer prefix
+            const authHeader = token.startsWith('Bearer ') ? token : `Bearer ${token}`
+            axios.defaults.headers.common['Authorization'] = authHeader
+            console.log('🔐 Auth header updated, fetching user...')
             fetchUser()
         } else {
+            console.log('🧹 Clearing auth state...')
             // Clear authorization header if no token
             delete axios.defaults.headers.common['Authorization']
+            setAuthLoading(false) // No token, stop loading
         }
     },[token])
 
@@ -114,7 +156,7 @@ export const AppProvider = ({ children })=>{
     const value = {
         navigate, currency, axios, user, setUser,
         token, setToken, isOwner, setIsOwner, fetchUser, showLogin, setShowLogin, showLoginWithRedirect, navigateAfterLogin, logout, fetchCars, cars, setCars,
-        pickupDate, setPickupDate, returnDate, setReturnDate, previousLocation, setPreviousLocation
+        pickupDate, setPickupDate, returnDate, setReturnDate, previousLocation, setPreviousLocation, authLoading
     }
 
     return (

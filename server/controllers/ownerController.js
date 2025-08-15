@@ -418,3 +418,151 @@ export const updateUserImage = async (req, res)=>{
         res.json({success: false, message: "An unexpected error occurred. Please try again."})
     }
 }
+
+// API to Get Analytics Data
+export const getAnalytics = async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const { dateRange, startDate, endDate, carType } = req.query;
+
+        // Build date filter
+        let dateFilter = {};
+        const today = new Date();
+
+        if (dateRange === 'month') {
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            dateFilter = { createdAt: { $gte: startOfMonth } };
+        } else if (dateRange === 'year') {
+            const startOfYear = new Date(today.getFullYear(), 0, 1);
+            dateFilter = { createdAt: { $gte: startOfYear } };
+        } else if (dateRange === 'custom' && startDate && endDate) {
+            dateFilter = {
+                createdAt: {
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
+                }
+            };
+        }
+
+        // Get owner's cars with optional type filter
+        let carFilter = { owner: _id };
+        if (carType !== 'all') {
+            carFilter.category = carType;
+        }
+
+        const ownerCars = await Car.find(carFilter);
+        const carIds = ownerCars.map(car => car._id);
+
+        // Get bookings for analytics
+        const bookingsQuery = {
+            owner: _id,
+            status: { $in: ['confirmed', 'completed'] },
+            ...dateFilter
+        };
+
+        const bookings = await Booking.find(bookingsQuery).populate('car', 'brand model image category year pricePerDay isAvaliable');
+
+        // Calculate total revenue and bookings
+        const totalRevenue = bookings.reduce((sum, booking) => sum + booking.price, 0);
+        const totalBookings = bookings.length;
+
+        // Monthly earnings calculation
+        const monthlyEarnings = {};
+        const yearlyEarnings = {};
+
+        bookings.forEach(booking => {
+            const date = new Date(booking.createdAt);
+            const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            const yearKey = date.getFullYear().toString();
+
+            monthlyEarnings[monthKey] = (monthlyEarnings[monthKey] || 0) + booking.price;
+            yearlyEarnings[yearKey] = (yearlyEarnings[yearKey] || 0) + booking.price;
+        });
+
+        // Revenue per car calculation
+        const carRevenue = {};
+        const carBookingCount = {};
+
+        bookings.forEach(booking => {
+            const carId = booking.car._id.toString();
+            carRevenue[carId] = (carRevenue[carId] || 0) + booking.price;
+            carBookingCount[carId] = (carBookingCount[carId] || 0) + 1;
+        });
+
+        const revenuePerCar = ownerCars.map(car => ({
+            _id: car._id,
+            brand: car.brand,
+            model: car.model,
+            image: car.image,
+            year: car.year,
+            category: car.category,
+            isAvailable: car.isAvaliable,
+            totalRevenue: carRevenue[car._id.toString()] || 0,
+            totalBookings: carBookingCount[car._id.toString()] || 0,
+            averageRate: carBookingCount[car._id.toString()]
+                ? Math.round((carRevenue[car._id.toString()] || 0) / carBookingCount[car._id.toString()])
+                : car.pricePerDay
+        }));
+
+        // Most rented cars with percentage
+        const carRentals = Object.entries(carBookingCount)
+            .map(([carId, count]) => {
+                const car = ownerCars.find(c => c._id.toString() === carId);
+                return car ? {
+                    _id: car._id,
+                    brand: car.brand,
+                    model: car.model,
+                    rentals: count,
+                    percentage: Math.round((count / totalBookings) * 100) || 0
+                } : null;
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.rentals - a.rentals)
+            .slice(0, 5); // Top 5 most rented
+
+        // Occupancy rates calculation
+        const occupancyRates = [];
+        const daysInPeriod = dateRange === 'month' ? 30 : dateRange === 'year' ? 365 : 30;
+
+        for (const car of ownerCars) {
+            const carBookings = bookings.filter(b => b.car._id.toString() === car._id.toString());
+
+            // Calculate total booked days for this car
+            let totalBookedDays = 0;
+            carBookings.forEach(booking => {
+                const pickup = new Date(booking.pickupDate);
+                const returnDate = new Date(booking.returnDate);
+                const daysDiff = Math.ceil((returnDate - pickup) / (1000 * 60 * 60 * 24)) + 1; // Include pickup day
+                totalBookedDays += daysDiff;
+            });
+
+            const occupancyRate = Math.min(Math.round((totalBookedDays / daysInPeriod) * 100), 100);
+
+            occupancyRates.push({
+                _id: car._id,
+                brand: car.brand,
+                model: car.model,
+                image: car.image,
+                occupancyRate: occupancyRate || 0,
+                bookedDays: totalBookedDays,
+                totalDays: daysInPeriod
+            });
+        }
+
+        const analyticsData = {
+            monthlyEarnings,
+            yearlyEarnings,
+            revenuePerCar,
+            mostRentedCars: carRentals,
+            occupancyRates: occupancyRates.sort((a, b) => b.occupancyRate - a.occupancyRate),
+            totalRevenue,
+            totalBookings
+        };
+
+        res.json({ success: true, analyticsData });
+
+    } catch (error) {
+        console.log('Analytics error:', error.message);
+        res.json({ success: false, message: 'Failed to load analytics data. Please try again.' });
+    }
+}

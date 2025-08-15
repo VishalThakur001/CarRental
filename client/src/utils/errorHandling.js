@@ -84,9 +84,10 @@ export const validateFormFields = (formData, requiredFields) => {
  * @returns {boolean} - True if validation passes, false otherwise
  */
 export const validateImageFile = (file, options = {}) => {
-  const { 
+  const {
     maxSize = 5 * 1024 * 1024, // 5MB default
-    allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+    allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp']
   } = options;
 
   if (!file) {
@@ -100,9 +101,21 @@ export const validateImageFile = (file, options = {}) => {
     return false;
   }
 
-  if (!allowedTypes.includes(file.type)) {
-    toast.error('Please upload a valid image file (JPEG, PNG, or WebP)');
+  // Get file extension
+  const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+
+  // Check both MIME type and file extension for better validation
+  const isValidMimeType = allowedTypes.includes(file.type);
+  const isValidExtension = allowedExtensions.includes(fileExtension);
+
+  if (!isValidMimeType && !isValidExtension) {
+    toast.error(`Please upload a valid image file (JPEG, PNG, or WebP). Detected type: ${file.type}, extension: ${fileExtension}`);
     return false;
+  }
+
+  // If MIME type is missing but extension is valid, proceed with warning
+  if (!isValidMimeType && isValidExtension) {
+    console.log('Warning: MIME type not detected correctly, but file extension is valid');
   }
 
   return true;

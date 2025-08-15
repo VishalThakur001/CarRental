@@ -1,6 +1,7 @@
 import React from 'react'
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'motion/react'
 
 const CarCard = ({car}) => {
 
@@ -8,52 +9,113 @@ const CarCard = ({car}) => {
     const navigate = useNavigate()
 
   return (
-    <div onClick={()=> {navigate(`/car-details/${car._id}`); window.scrollTo(0,0)}} className='group rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition-all duration-500 cursor-pointer bg-white'>
+    <motion.div 
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.3 }}
+      onClick={()=> {navigate(`/car-details/${car._id}`); window.scrollTo(0,0)}} 
+      className='group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 h-full flex flex-col'
+    >
       
-      <div className='relative h-40 sm:h-48 overflow-hidden'> 
-        <img src={car.image} alt="Car Image" className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'/>
+      {/* Car Image Section */}
+      <div className='relative h-48 lg:h-52 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100'> 
+        <img 
+          src={car.image} 
+          alt={`${car.brand} ${car.model}`} 
+          className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+        />
 
-        {car.isAvaliable && <p className='absolute top-2 sm:top-4 left-2 sm:left-4 bg-primary/90 text-white text-xs px-2 sm:px-2.5 py-1 rounded-full'>Available Now</p>}
+        {/* Availability Badge */}
+        {car.isAvaliable && (
+          <div className='absolute top-4 left-4'>
+            <div className='bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1'>
+              <div className='w-2 h-2 bg-white rounded-full animate-pulse'></div>
+              Available
+            </div>
+          </div>
+        )}
 
-        <div className='absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-black/80 backdrop-blur-sm text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg'>
-            <span className='font-semibold text-sm sm:text-base'>{currency}{car.pricePerDay}</span>
-            <span className='text-xs sm:text-sm text-white/80'> / day</span>
+        {/* Price Badge */}
+        <div className='absolute bottom-4 right-4'>
+          <div className='bg-gradient-to-r from-primary to-purple-600 text-white px-4 py-2 rounded-xl shadow-lg backdrop-blur-sm'>
+            <div className='text-center'>
+              <span className='font-bold text-lg'>{currency}{car.pricePerDay}</span>
+              <div className='text-xs opacity-90'>per day</div>
+            </div>
+          </div>
         </div>
+
+        {/* Overlay on Hover */}
+        <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
       </div>
 
-      <div className='p-3 sm:p-4 lg:p-5'>
-        <div className='flex justify-between items-start mb-2'>
+      {/* Car Details Section */}
+      <div className='p-5 lg:p-6 flex-1 flex flex-col'>
+        
+        {/* Car Name & Category */}
+        <div className='mb-4'>
+          <h3 className='text-lg lg:text-xl font-bold text-gray-900 leading-tight mb-1 group-hover:text-primary transition-colors duration-300'>
+            {car.brand} {car.model}
+          </h3>
+          <p className='text-sm text-gray-500 font-medium'>
+            {car.category} • {car.year}
+          </p>
+        </div>
+
+        {/* Car Specifications */}
+        <div className='grid grid-cols-2 gap-3 mb-4 flex-1'>
+          <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg'>
+            <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0'>
+              <img src={assets.users_icon} alt="seats" className='w-4 h-4 opacity-60'/>
+            </div>
             <div>
-                <h3 className='text-base sm:text-lg font-medium leading-tight'>{car.brand} {car.model}</h3>
-                <p className='text-muted-foreground text-xs sm:text-sm'>{car.category} • {car.year}</p>
+              <div className='text-xs text-gray-500 font-medium'>Seats</div>
+              <div className='text-sm font-semibold text-gray-900'>{car.seating_capacity}</div>
             </div>
+          </div>
+
+          <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg'>
+            <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0'>
+              <img src={assets.fuel_icon} alt="fuel" className='w-4 h-4 opacity-60'/>
+            </div>
+            <div>
+              <div className='text-xs text-gray-500 font-medium'>Fuel</div>
+              <div className='text-sm font-semibold text-gray-900'>{car.fuel_type}</div>
+            </div>
+          </div>
+
+          <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg'>
+            <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0'>
+              <img src={assets.car_icon} alt="transmission" className='w-4 h-4 opacity-60'/>
+            </div>
+            <div>
+              <div className='text-xs text-gray-500 font-medium'>Type</div>
+              <div className='text-sm font-semibold text-gray-900'>{car.transmission}</div>
+            </div>
+          </div>
+
+          <div className='flex items-center gap-2 p-2 bg-gray-50 rounded-lg'>
+            <div className='w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0'>
+              <img src={assets.location_icon} alt="location" className='w-4 h-4 opacity-60'/>
+            </div>
+            <div>
+              <div className='text-xs text-gray-500 font-medium'>Location</div>
+              <div className='text-sm font-semibold text-gray-900 truncate' title={car.address?.street || car.location}>
+                {car.address?.city || car.location}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className='mt-3 sm:mt-4 grid grid-cols-2 gap-y-2 text-gray-600'>
-            <div className='flex items-center text-xs sm:text-sm text-muted-foreground'>
-                <img src={assets.users_icon} alt="" className='h-3 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0'/>
-                <span>{car.seating_capacity} Seats</span>
-            </div>
-            <div className='flex items-center text-xs sm:text-sm text-muted-foreground'>
-                <img src={assets.fuel_icon} alt="" className='h-3 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0'/>
-                <span>{car.fuel_type}</span>
-            </div>
-            <div className='flex items-center text-xs sm:text-sm text-muted-foreground'>
-                <img src={assets.car_icon} alt="" className='h-3 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0'/>
-                <span>{car.transmission}</span>
-            </div>
-            <div className='flex items-center text-xs sm:text-sm text-muted-foreground'>
-                <img src={assets.location_icon} alt="" className='h-3 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0'/>
-                <span title={car.address?.street || car.location} className='truncate'>
-                    {car.address?.city || car.location}
-                    {car.address?.state && `, ${car.address.state}`}
-                </span>
-            </div>
-        </div>
-
+        {/* Action Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className='w-full bg-gradient-to-r from-primary to-purple-600 hover:from-purple-600 hover:to-primary text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group-hover:shadow-2xl'
+        >
+          View Details
+        </motion.button>
       </div>
-
-    </div>
+    </motion.div>
   )
 }
 
