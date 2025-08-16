@@ -81,45 +81,6 @@ A comprehensive, full-stack car rental application built with modern web technol
 - *Nodemon*: Development server with auto-restart
 - *Git*: Version control system
 
-## 🏗 Project Structure
-
-
-CarRental-main/
-├── client/                          # Frontend React application
-│   ├── public/                      # Static assets
-│   ├── src/
-│   │   ├── assets/                  # Images, icons, and static resources
-│   │   ├── components/              # Reusable UI components
-│   │   │   ├── owner/               # Owner-specific components
-│   │   │   └── ...                  # General components
-│   │   ├── context/                 # React Context for state management
-│   │   ├── data/                    # Static data (state-city mapping)
-│   │   ├── pages/                   # Route-specific page components
-│   │   │   ├── owner/               # Owner dashboard pages
-│   │   │   └── ...                  # General pages
-│   │   ├── utils/                   # Utility functions
-│   │   ├── App.jsx                  # Main application component
-│   │   ├── main.jsx                 # Application entry point
-│   │   └── index.css                # Global styles
-│   ├── package.json                 # Frontend dependencies
-│   ├── vite.config.js               # Vite configuration
-│   └── vercel.json                  # Vercel deployment config
-├── server/                          # Backend Node.js application
-│   ├── configs/                     # Configuration files
-│   │   ├── db.js                    # Database connection
-│   │   ├── emailConfig.js           # Email configuration
-│   │   └── imageKit.js              # ImageKit configuration
-│   ├── controllers/                 # Business logic handlers
-│   ├── middleware/                  # Custom middleware
-│   ├── models/                      # MongoDB schemas
-│   ├── routes/                      # API endpoint definitions
-│   ├── package.json                 # Backend dependencies
-│   ├── server.js                    # Main server file
-│   └── vercel.json                  # Vercel deployment config
-├── package-lock.json                # Dependency lock file
-└── .gitignore                       # Git ignore rules
-
-
 ## 🚀 Quick Start
 
 *Want to see it in action?* 🎯  
