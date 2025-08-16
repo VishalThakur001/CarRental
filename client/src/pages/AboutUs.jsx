@@ -62,7 +62,7 @@ const AboutUs = () => {
               </div>
               
               <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-gray-900">
-                Built by Developers,
+                Built by Developer,
                 <span className='text-transparent bg-gradient-to-r from-primary to-purple-600 bg-clip-text block'>
                   Designed for Everyone
                 </span>
@@ -80,18 +80,21 @@ const AboutUs = () => {
                 </p>
               </div>
 
-              {/* Developer Info Cards */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8'>
-                {[
-                  { name: 'Vishal Thakur', role: 'Full Stack Developer', expertise: 'Backend & Database' },
-                  { name: 'Rohit Sharma', role: 'Frontend Developer', expertise: 'UI/UX & Design' }
-                ].map((dev, index) => (
-                  <div key={dev.name} className='bg-white p-4 rounded-2xl shadow-lg border border-gray-100'>
-                    <h4 className='font-bold text-gray-900'>{dev.name}</h4>
-                    <p className='text-sm text-primary font-medium'>{dev.role}</p>
-                    <p className='text-xs text-gray-600'>{dev.expertise}</p>
-                  </div>
-                ))}
+              {/* Developer Info Card */}
+              <div className='mt-8'>
+                <div className='bg-white p-6 rounded-2xl shadow-lg border border-gray-100'>
+                  <h4 className='font-bold text-gray-900'>Vishal Thakur</h4>
+                  <p className='text-sm text-primary font-medium'>Full Stack Developer</p>
+                  <p className='text-xs text-gray-600 mb-2'>Backend & Database</p>
+                  <a 
+                    href="https://yourprofessionalwebsite.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-blue-600 hover:underline"
+                  >
+                    My Portfolio
+                  </a>
+                </div>
               </div>
             </motion.div>
             
@@ -127,7 +130,7 @@ const AboutUs = () => {
             </div>
             
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-              What Drives Us 
+              What Drives Us
               <span className='text-transparent bg-gradient-to-r from-primary to-purple-600 bg-clip-text'>
                 Forward
               </span>
